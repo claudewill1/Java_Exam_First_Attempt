@@ -60,8 +60,10 @@ public class LikeIdeaService {
 	
 	// UPDATE methods
 	
-	public void editIdea(Like like) {
-		likeRepo.save(like);
+	public void updateIdea(Long id, Idea ideaUpdate) {
+		Idea idea = this.getIdeaById(id);
+		idea.setIdea(ideaUpdate.getIdea());
+		ideaRepo.save(idea);
 	}
 	
 	public void addLikeToIdea(User liker, Idea idea) {

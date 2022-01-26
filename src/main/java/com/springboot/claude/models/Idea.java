@@ -38,7 +38,7 @@ public class Idea {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinTable(name="user_id")
-	private User user;
+	private User creator;
 	
 	@OneToMany(mappedBy="ideaLiked",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private List<Like> likes;
@@ -89,12 +89,12 @@ public class Idea {
 		this.updatedAt = updatedAt;
 	}
 
-	public User getUser() {
-		return user;
+	public User getCreator() {
+		return creator;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setCreator(User creator) {
+		this.creator = creator;
 	}
 
 	public List<Like> getLikes() {
