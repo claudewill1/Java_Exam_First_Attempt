@@ -58,22 +58,61 @@
 					</div>
 					
 					<div class="form-group row">
-						<form:label class="col-3 col-form-label" path="firstName">First Name</form:label>
+						<form:label class="col-3 col-form-label" path="password">Password</form:label>
 						<div class="col-8">
-							<form:input class="form-control" type="text" path="firstName"/>
-							<form:errors class="small" path="firstName"/>
+							<form:input class="form-control" type="text" path="password"/>
+							<form:errors class="small" path="password"/>
 						</div>
 					</div>
 					
 					<div class="form-group row">
-						<form:label class="col-3 col-form-label" path="firstName">First Name</form:label>
+						<form:label class="col-3 col-form-label" path="firstName">Confirm Password:</form:label>
 						<div class="col-8">
-							<form:input class="form-control" type="text" path="firstName"/>
-							<form:errors class="small" path="firstName"/>
+							<form:input class="form-control" type="text" path="passwordConfirm"/>
+							<form:errors class="small" path="passwordConfirm"/>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-3 offset-3">
+							<input class="btn btn-success" type="submit" value="Register"/>
 						</div>
 					</div>
 				</form:form>
 			</div>
+			<div class="col-5 border border-dark pl-5">
+		            
+		            <h2 class="my-3">Login</h2>
+			        
+					<p id="errors" class="mb-3"><c:out value="${error}" /></p>
+					
+			        <form action="/login" method="POST">
+			        	
+						<!-- Email Field -->
+			        	<div class="form-group row">
+				        	<label class="col-3 col-form-label" for="email">Email</label>
+				       		 <div class="col-8">
+				        		<input class="form-control" type="email" id="email" name="email"/>
+				        	</div>
+				    	</div>
+				    	
+				    	<!-- Password Field -->
+				    	<div class="form-group row">
+				        	<label class="col-3 col-form-label" for="password">Password</label>
+				       		 <div class="col-8">
+				        		<input class="form-control" type="password" id="password" name="password"/>
+				        	</div>
+				    	</div>
+				    	
+				    	<!-- Submit Button -->
+				    	<div class="form-group row">
+			    			<div class="col-3 offset-3">
+			    				<input class = "btn btn-success" type="submit" value="Login"/>
+			    			</div>	
+			    		</div>
+			    		
+			    	</form>
+			    	
+		        </div>
 		</div>
 	</main>
 </body>
