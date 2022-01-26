@@ -21,7 +21,7 @@
    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
 	
 		<!-- Company Name and Logo -->
-        <a class="navbar-brand text-decoration-none" href="#">Ideas</a>
+        <a class="navbar-brand text-decoration-none" href="#">Great Ideas</a>
         
         <!-- Toggler Button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
@@ -89,4 +89,4 @@
 		</div>
 	</main>
 </body>
-<html>
+</html>

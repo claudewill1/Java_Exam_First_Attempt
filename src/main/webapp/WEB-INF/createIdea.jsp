@@ -19,7 +19,7 @@
 </head>
 <body>
    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-   		<a class="navbar-brand text-decoration-none" href="#"><!-- Enter App Name --></a>
+   		<a class="navbar-brand text-decoration-none" href="#">Great Ideas</a>
    		
    		<!-- Toggler Button -->
    		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
@@ -38,9 +38,9 @@
    		</div>
    </nav>
    <main class="ml-3">
-   		<h5 class="mb-4">Create</h5>
+   		<h5 class="mb-4">Create a new Idea</h5>
    		<div class="col-6">
-   			<form:form action="/path/new" method="POST" modelAttribute="">
+   			<form:form action="/ideas/newIdea" method="POST" modelAttribute="idea">
    				<form:hidden value="${user.id}" path="creator"/>
    				<div class="form-group row">
    					<form:label path="idea">Idea:</form:label>
@@ -49,8 +49,12 @@
    						<form:errors class="small" path="idea"/>
    					</div>
    				</div>
+   				
+   				<div class="form-group row">
+   					<input class="btn btn-success" type="submit" value="Create"/>
+   				</div>
    			</form:form>
    		</div>
    </main>
 </body>
-<html>
+</html>

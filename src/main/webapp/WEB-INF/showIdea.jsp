@@ -21,7 +21,7 @@
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
 	
 		<!-- Company Name and Logo -->
-        <a class="navbar-brand text-decoration-none" href="#">Ideas</a>
+        <a class="navbar-brand text-decoration-none" href="#">Great Ideas</a>
         
         <!-- Toggler Button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
@@ -31,7 +31,9 @@
         <!-- Navbar Links -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-            	
+            	<li class="nav-item">
+   					<a class="nav-link active" href="/dashboard">Dashboard</a>
+   				</li>
             	<li class="nav-item">
                     <a class="nav-link active" href="/logout">Logout</a>
                 </li>
@@ -50,11 +52,23 @@
 			<div class="row">
 				<div class="col-9">
 					<table class="table table-dark table-striped mt-1">
-					
+						<thead>
+							<tr>
+								<th>Name</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${likersOfIdeaInDescOrder}" var="likes">
+								<tr>
+									<td>${likes.liker.firstName} ${likes.liker.lastName}</td>
+								</tr>
+							</c:forEach>
+						</tbody>
 					</table>
 				</div>
 			</div>
+			<a class="btn btn-primary" href="/idea/edit/${idea.id}">Edit</a>
 		</div>
 	</main>
 </body>
-<html>
+</html>

@@ -21,7 +21,7 @@
    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
 	
 		<!-- Company Name and Logo -->
-        <a class="navbar-brand text-decoration-none" href="#"><!-- App Name Here --></a>
+        <a class="navbar-brand text-decoration-none" href="#">Great Ideas</a>
                 
 	</nav>
 	<main>
