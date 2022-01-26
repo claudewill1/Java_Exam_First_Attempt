@@ -1,4 +1,4 @@
-
+package com.springboot.claude.models;
 
 import java.util.*;
 import javax.persistence.*;
@@ -26,6 +26,7 @@ public class User {
 	@Size(min=8, message="Password must be at least 8 characters.")
 	private String password;
 	@Transient
+	@NotBlank(message="This field cannot be blank")
 	private String passwordConfirm;
 	@Column(updatable=false)
 	@DateTimeFormat(pattern="MM/dd/yyyy HH:mm:ss")
@@ -34,16 +35,7 @@ public class User {
 	@DateTimeFormat(pattern="MM/dd/yyyy HH:mm:ss")
 	private Date updatedAt;
 	
-	public User() {}
-	
-	public User(String firstName, String lastName, String email, String password) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.password = password;
-	}
-	
-	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+		@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private List<Idea> ideas;
 	
 	@ManyToMany(fetch=FetchType.LAZY)
@@ -53,8 +45,8 @@ public class User {
 			inverseJoinColumns=@JoinColumn(name="idea_id")
 			)
 	private List<Idea> ideaWithLikes;
-
-	private String passwordConfirm;
+	
+	public User() {}
 	
 	public Long getId() {
 		return id;
@@ -95,7 +87,7 @@ public class User {
 		return passwordConfirm;
 	}
 	public void setPassConfirm(String passwordConfirm) {
-		this.passwordConfirm = passConfirm;
+		this.passwordConfirm = passwordConfirm;
 	}		
 	public List<Idea> getMyIdeas() {
 		return ideas;

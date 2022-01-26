@@ -18,7 +18,7 @@
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-   <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
 	
 		<!-- Company Name and Logo -->
         <a class="navbar-brand text-decoration-none" href="#">Ideas</a>
@@ -41,50 +41,18 @@
         
 	</nav>
 	<main>
-		<div class="ml-4">
-			<h3>Welcome ${user.firstName}</h3>
-			<hr>
-			
-			<div class="mt-3 mb-4">
-				<h5>Ideas</h5>
-				<div class="row">
-					<div class="col-9">
-						<table class="table table-dark table-striped mt-1">
-							<thead>
-								<tr>
-									<th>Idea</th>
-									<th>Created By:</th>
-									<th>Likes</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach items="${ideas}" var="idea">
-									<tr>
-										<td>
-											<a href="/ideas/${idea.id}">${idea.name}</a>
-										</td>
-										<td>${idea.creator.firstName} ${idea.creator.lastName}</td>
-										<td>${idea.likes.size()}</td>
-										<td>
-											<c:choose>
-												<c:when test="${!idea.usersAlreadyLike.contains(user)}">
-													<a href="/ideas/like/${idea.id}">Like</a>
-												</c:when>
-												<c:otherwise>
-													<a href="/idea/unlike/${idea.id}">UnLike</a>
-												</c:otherwise>
-											</c:choose>
-										</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</div>
+		<h3>${idea.ideaName}</h3>
+		<hr>
+		
+		<div class="ml-3">
+			<p>Created By:  ${idea.creator.firstName} ${idea.creator.lastName}</p>
+			<h5 class="mt-4 mb-2">Users who liked your idea:</h5>
+			<div class="row">
+				<div class="col-9">
+					<table class="table table-dark table-striped mt-1">
+					
+					</table>
 				</div>
-				
-				
-				
 			</div>
 		</div>
 	</main>

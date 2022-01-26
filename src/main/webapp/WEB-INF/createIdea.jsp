@@ -43,10 +43,10 @@
    			<form:form action="/path/new" method="POST" modelAttribute="">
    				<form:hidden value="${user.id}" path="creator"/>
    				<div class="form-group row">
-   					<form:label path="name">Name:</form:label>
+   					<form:label path="idea">Idea:</form:label>
    					<div class="col-8">
-   						<form:input class="form-control" type="text" path="name"/>
-   						<form:errors class="small" path="name"/>
+   						<form:input class="form-control" type="text" path="idea"/>
+   						<form:errors class="small" path="idea"/>
    					</div>
    				</div>
    			</form:form>

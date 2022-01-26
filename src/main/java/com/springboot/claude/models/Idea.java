@@ -3,6 +3,7 @@ package com.springboot.claude.models;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -26,7 +28,7 @@ public class Idea {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	@Column
-	private String idea;
+	private String ideaName;
 	@Column(updatable=false)
 	@DateTimeFormat(pattern="MM/dd/yyyy HH:mm:ss")
 	private Date createdAt;
@@ -38,18 +40,21 @@ public class Idea {
 	@JoinTable(name="user_id")
 	private User user;
 	
+	@OneToMany(mappedBy="ideaLiked",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	private List<Like> likes;
+	
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
 			name="liked_ideas",
 			joinColumns=@JoinColumn(name="idea_id"),
 			inverseJoinColumns=@JoinColumn(name="user_id")
 			)
-	private List<Like> likes;
+	private List<User> usersAlreadyLike;
 	
 	public Idea() {}
 	
 	public Idea(String idea) {
-		this.idea = idea;
+		this.ideaName = idea;
 	}
 
 	public Long getId() {
@@ -61,11 +66,11 @@ public class Idea {
 	}
 
 	public String getIdea() {
-		return idea;
+		return ideaName;
 	}
 
 	public void setIdea(String idea) {
-		this.idea = idea;
+		this.ideaName = idea;
 	}
 
 	public Date getCreatedAt() {
@@ -107,5 +112,13 @@ public class Idea {
 	@PreUpdate
 	protected void onUpdate() {
 		this.updatedAt = new Date();
+	}
+
+	public List<User> getUsersAlreadyLike() {
+		return usersAlreadyLike;
+	}
+	
+	public void setUsersAlreadyLike(List<User> usersAlreadyLike) {
+		this.usersAlreadyLike = usersAlreadyLike;
 	}
 }
