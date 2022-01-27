@@ -3,7 +3,6 @@ package com.springboot.claude.models;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,49 +12,43 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="ideas")
+@Table(name = "ideas")
 public class Idea {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@Column
-	private String ideaName;
-	@Column(updatable=false)
-	@DateTimeFormat(pattern="MM/dd/yyyy HH:mm:ss")
+	@Size(min=3,message="Title must be greater than 3 characters")
+	private String title;
+	private String creator;
+
+	private int likes;
+	
+
+	@Column(updatable = false)
+	@DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
 	private Date createdAt;
 	@Column
-	@DateTimeFormat(pattern="MM/dd/yyyy HH:mm:ss")
+	@DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
 	private Date updatedAt;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinTable(name="user_id")
-	private User creator;
-	
-	@OneToMany(mappedBy="ideaLiked",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	private List<Like> likes;
-	
-	@ManyToMany(fetch=FetchType.LAZY)
-	@JoinTable(
-			name="liked_ideas",
-			joinColumns=@JoinColumn(name="idea_id"),
-			inverseJoinColumns=@JoinColumn(name="user_id")
-			)
-	private List<User> usersAlreadyLike;
-	
-	public Idea() {}
-	
-	public Idea(String idea) {
-		this.ideaName = idea;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "likedIdeas", joinColumns = @JoinColumn(name = "idea_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private List<User> users;
+
+	public Idea() {
 	}
+
+	
 
 	public Long getId() {
 		return id;
@@ -65,12 +58,12 @@ public class Idea {
 		this.id = id;
 	}
 
-	public String getIdea() {
-		return ideaName;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setIdea(String idea) {
-		this.ideaName = idea;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public Date getCreatedAt() {
@@ -89,36 +82,43 @@ public class Idea {
 		this.updatedAt = updatedAt;
 	}
 
-	public User getCreator() {
+	public String getCreator() {
 		return creator;
 	}
 
-	public void setCreator(User creator) {
-		this.creator = creator;
+	public void setCreator(String u) {
+		this.creator = u;
 	}
+	
+	
 
-	public List<Like> getLikes() {
+	public int getLikes() {
 		return likes;
 	}
 
-	public void setLikes(List<Like> likes) {
+	public void setLikes(int likes) {
 		this.likes = likes;
 	}
-	
+
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = new Date();
 	}
+
 	@PreUpdate
 	protected void onUpdate() {
 		this.updatedAt = new Date();
 	}
 
-	public List<User> getUsersAlreadyLike() {
-		return usersAlreadyLike;
+	public List<User> getUsers() {
+		return users;
 	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+
+
 	
-	public void setUsersAlreadyLike(List<User> usersAlreadyLike) {
-		this.usersAlreadyLike = usersAlreadyLike;
-	}
 }

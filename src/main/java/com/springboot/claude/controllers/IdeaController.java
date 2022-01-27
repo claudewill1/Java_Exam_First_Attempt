@@ -5,7 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springboot.claude.models.Idea;
 import com.springboot.claude.models.Like;
@@ -22,29 +23,49 @@ import com.springboot.claude.services.UserService;
 
 @Controller
 public class IdeaController {
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private LikeIdeaService likeIdeaService;
+	private final UserService userService;
+	
+	private final LikeIdeaService likeIdeaService;
+	
+	public IdeaController(UserService userService, LikeIdeaService likeIdeaService) {
+		this.userService = userService;
+		this.likeIdeaService = likeIdeaService;
+	}
 	
 	@GetMapping("/dashboard")
 	public String dashboard(HttpSession session, Model model) {
-		Long userId = (Long)session.getAttribute("user_id");
-		User user = userService.findUserById(userId);
-		model.addAttribute("user",user);
-		List<Idea> ideas = likeIdeaService.allIdeas();
-		model.addAttribute("ideas",ideas);
+		Long uID = (Long) session.getAttribute("user_id");
+		User user = userService.findUserById(uID);
+		Iterable<Idea> ideas = likeIdeaService.allIdeas();
+		model.addAttribute("ideas", ideas);
+		model.addAttribute("user", user);
 		return "dashboard.jsp";
+	}
+	@GetMapping("/idea/new")
+	public String createIdea(HttpSession session, @ModelAttribute("idea") Idea idea, RedirectAttributes redirect) {
+		if(session.getAttribute("user_id") != null) {
+			return "createIdea.jsp";
+		} else {
+			redirect.addFlashAttribute("loginError","You must be logged into to use this site");
+			return "redirect:/";
+		}
 	}
 	
 	@PostMapping(value="/ideas/newIdea")
-	public String createIdea(@Valid @ModelAttribute("idea") Idea idea, BindingResult result, HttpSession session) {
+	public String createIdea(@Valid @ModelAttribute("idea") Idea idea, BindingResult result, HttpSession session, Model model, RedirectAttributes redirect) {
+		
 		Long userId = (Long)session.getAttribute("user_id");
-		User user = userService.findUserById(userId);
-		if(result.hasErrors()) return "createIdea.jsp";
-		idea.setCreator(user);
-		likeIdeaService.createIdea(idea);
-		return "redirect:/dashboard";
+		if(result.hasErrors()) {
+			redirect.addFlashAttribute("errors",result.getAllErrors());
+			return "redirect:/idea/new";
+		} else {
+			String userName = userService.findUserById(userId).getName();
+			idea.setCreator(userName);
+			idea.setLikes(0);
+			likeIdeaService.createIdea(idea);
+			return "redirect:/dashboard";
+		}
+		
 	}
 	
 	@GetMapping("/idea/{idea_id}")
@@ -52,43 +73,31 @@ public class IdeaController {
 		Idea idea = likeIdeaService.getIdeaById(idea_id);
 		Long userId = (Long) session.getAttribute("user_id");
 		User user = userService.findUserById(userId);
-		List<Like> likes = idea.getLikes();
+		
 		model.addAttribute("idea",idea);
 		model.addAttribute("user",user);
-		model.addAttribute("likes",likes);
+		
 		return "showIdea.jsp";
 		
 	}
 	
 	@GetMapping("/idea/edit/{idea_id}")
-	public String editIdea(@PathVariable("idea_id") Long id, Model model, HttpSession session, @Valid @ModelAttribute("editIdea") Idea editIdea) {
-		Long userId = (Long) session.getAttribute("user_id");
-		Idea idea = likeIdeaService.getIdeaById(id);
-		if(userId == null) {
-			return "redirect:/";
-		}
-		else if(idea == null || !idea.getCreator().equals(userId)) {
-			return "redirect:/dashboard";
-		}
-		else {
-			User currentUser = this.userService.findUserById(userId);
-			model.addAttribute("user",currentUser);
-			model.addAttribute("idea",idea);
-			return "edit.jsp";
-			
-		}
+	public String editIdea(@PathVariable("idea_id") Long id, Model model) {
 		
+		Idea idea = likeIdeaService.getIdeaById(id);
+		model.addAttribute("idea",idea);
+		return "edit.jsp";
 	}
 	
 	@PostMapping(value="/idea/update/{idea_id}")
 	public String updateIdea(@Valid @ModelAttribute("idea") Idea idea, @PathVariable("idea_id") Long id, BindingResult result, HttpSession session) {
 		if(result.hasErrors()) {
-			return "redirect:/idea/edit/"+id;
+			return "edit.jsp";
 		} else {
 			Long userId = (Long) session.getAttribute("user_id");
-			User user = userService.findUserById(userId);
+			String user = userService.findUserById(userId).getName();
 			idea.setCreator(user);
-			likeIdeaService.updateIdea(id,idea);
+			likeIdeaService.updateIdea(idea);
 			return "redirect:/dashboard";
 		}
 	}
@@ -108,7 +117,7 @@ public class IdeaController {
 			return "redirect:/dashboard";
 		}
 	}
-	
+	/*
 	@GetMapping("/idea/like/{idea_id}")
 	public String likeIdea(@PathVariable("idea_id") Long ideaId, @Valid Idea idea, BindingResult result, HttpSession session) {
 		Long userId = (Long) session.getAttribute("user_id");
@@ -117,7 +126,7 @@ public class IdeaController {
 		Like like = new Like();
 		like.setIdeas(ideaToLike);
 		like.setUsers(user);
-		likeIdeaService.addLikeToIdea(user, ideaToLike);
+		likeIdeaService.likeIdea(ideaToLike, user);
 		
 		return "redirect:/dashboard";
 	}
@@ -127,9 +136,9 @@ public class IdeaController {
 		Idea ideaToUnlike = likeIdeaService.getIdeaById(ideaId);
 		Long userId = (Long) session.getAttribute("user_id");
 		User user = userService.findUserById(userId);
-		List<User> ideasLikedByUser = ideaToUnlike.getUsersAlreadyLike();
+		List<User> ideasLikedByUser = ideaToUnlike.getUsers();
 		ideasLikedByUser.remove(user);
-		likeIdeaService.deleteIdeaById(ideaId);
+		likeIdeaService.unlikeIdea(ideaId);
 		return "redirect:/dashboard";
-	}
+	}*/
 }

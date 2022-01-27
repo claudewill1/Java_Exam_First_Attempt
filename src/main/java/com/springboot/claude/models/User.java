@@ -16,11 +16,8 @@ public class User {
 	@Column
 	@NotBlank(message="This field is required and cannot be blank. Name must be between 2 and 200 characters long!")
 	@Size(min=2, max=200)
-	private String firstName;
-	@Column
-	@NotBlank(message="This field is required and cannot be blank. Name must be between 2 and 200 characters long!")
-	@Size(min=2, max=200)
-	private String lastName;
+	private String name;
+	
 	@Email(message="Invalid entry") 
 	private String email;
 	@Size(min=8, message="Password must be at least 8 characters.")
@@ -35,8 +32,6 @@ public class User {
 	@DateTimeFormat(pattern="MM/dd/yyyy HH:mm:ss")
 	private Date updatedAt;
 	
-		@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
-	private List<Idea> ideas;
 	
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
@@ -55,21 +50,16 @@ public class User {
 		this.id = id;
 	}
 	
-	public String getFirstName() {
-		return firstName;
+	public String getName() {
+		return this.name;
 	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public List<Idea> getIdeas() {
-		return ideas;
-	}
-
-	public void setIdeas(List<Idea> ideas) {
-		this.ideas = ideas;
-	}
+	
 
 	public String getEmail() {
 		return email;
@@ -83,25 +73,35 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getPassConfirm() {
+	
+	
+	
+	public String getPasswordConfirm() {
 		return passwordConfirm;
 	}
-	public void setPassConfirm(String passwordConfirm) {
+
+	public void setPasswordConfirm(String passwordConfirm) {
 		this.passwordConfirm = passwordConfirm;
-	}		
-	public List<Idea> getMyIdeas() {
-		return ideas;
 	}
-	public void setMyIdeas(List<Idea> myIdeas) {
-		this.ideas = myIdeas;
+
+	public Date getCreatedAt() {
+		return createdAt;
 	}
-	public List<Idea> getLikedIdeas() {
-		return ideas;
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
-	public void setLikedIdeas(List<Idea> likedIdeas) {
-		this.ideas = likedIdeas;
+
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
 	
+
 	@PrePersist
     protected void onCreate(){
         this.createdAt = new Date();

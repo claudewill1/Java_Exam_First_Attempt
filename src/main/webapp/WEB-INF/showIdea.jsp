@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!-- c:out ; c:forEach etc. --> 
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <!-- Formatting (dates) --> 
-<%@taglib prefix="fmt"uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- form:form -->
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!-- for rendering errors on PUT routes -->
 <%@ page isErrorPage="true" %>
 <!DOCTYPE html>
@@ -43,11 +43,11 @@
         
 	</nav>
 	<main>
-		<h3>${idea.ideaName}</h3>
+		<h3 style="margin-left:10px;">${idea.title}</h3>
 		<hr>
 		
-		<div class="ml-3">
-			<p>Created By:  ${idea.creator.firstName} ${idea.creator.lastName}</p>
+		<div style="margin-left:10px;" class="ml-3">
+			<p>Created By: <c:out value="${idea.creator}"/></p>
 			<h5 class="mt-4 mb-2">Users who liked your idea:</h5>
 			<div class="row">
 				<div class="col-9">
@@ -58,9 +58,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${likersOfIdeaInDescOrder}" var="likes">
+							<c:forEach items="${idea.users}" var="user">
 								<tr>
-									<td>${likes.liker.firstName} ${likes.liker.lastName}</td>
+									<td>${user.name}</td>
 								</tr>
 							</c:forEach>
 						</tbody>

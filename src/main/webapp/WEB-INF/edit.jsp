@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!-- c:out ; c:forEach etc. --> 
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <!-- Formatting (dates) --> 
-<%@taglib prefix="fmt"uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- form:form -->
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!-- for rendering errors on PUT routes -->
 <%@ page isErrorPage="true" %>
 <!DOCTYPE html>
@@ -38,25 +38,25 @@
    		</div>
    </nav>
    <main>
-   		<h3 class="mb-4">Edit ${idea.ideaName}</h3>
+   		<h3 class="mb-4">Edit ${idea.title}</h3>
    		
    		<div class="row">
    			<div class="col-6">
-   				<form:form action="/ideas/edit/${idea.id}" method="POST" modelAttribute="idea">
+   				<form:form action="/idea/${idea.id}/edit" method="POST" modelAttribute="idea">
    					<input type="hidden" name="_method" value="put"/>
    					
    					<form:hidden value="${user.id}" path="creator"/>
    					
    					<div class="form-group row">
-   						<form:label class="col-3 col-form-label" path="ideaName">Content:</form:label>
+   						<form:label class="col-3 col-form-label" path="title">Content:</form:label>
    						<div class="col-8">
-   							<form:input class="form-control" type="text" path="ideaName"/>
-   							<form:errors class="small" path="ideaName"/>
+   							<form:input class="form-control" type="text" path="title"/>
+   							<form:errors class="small" path="title"/>
    						</div>
    					</div>
    					<div class="form-group row">
    						<div class="col-1 offset-2">
-   							<input class="btn btn-success" type="submit" value="Edit"/>
+   							<input class="btn btn-success" type="submit" value="Update"/>
    						</div>
    						<div class="col-1 ml-2">
    							<a class="btn btn-danger text-decoration-none" href="/ideas/delete/${idea.id}">Delete</a>

@@ -1,35 +1,32 @@
 package com.springboot.claude.services;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springboot.claude.models.Idea;
-import com.springboot.claude.models.Like;
-import com.springboot.claude.models.User;
 import com.springboot.claude.repositories.IdeaRepo;
-import com.springboot.claude.repositories.LikeRepo;
-import com.springboot.claude.repositories.UserRepo;
 
 @Service
 public class LikeIdeaService {
-	@Autowired
-	private LikeRepo likeRepo;
-	@Autowired
-	private IdeaRepo ideaRepo;
-	@Autowired
-	private UserRepo userRepo;
-	// create methods
+	
+	private final IdeaRepo ideaRepo;
+	
+	
+	public LikeIdeaService(IdeaRepo ideaRepo) {
+		
+		this.ideaRepo = ideaRepo;
+		
+	}
 	
 	
 	public Idea createIdea(Idea idea) {
-		return this.ideaRepo.save(idea);
+		
+		return ideaRepo.save(idea);
 	}
 	
-	public Like createLike(Like like) {
-		return this.likeRepo.save(like);
-	}
+	
 	
 	// READ Methods
 	
@@ -43,41 +40,52 @@ public class LikeIdeaService {
 		return this.ideaRepo.findById(id).orElse(null);
 	}
 	
-	// retrieves all ideas with likes
-	public List<Like> allLikes(){
-		return this.likeRepo.findAll();
-	}
 	
-	public Like getLikeById(Long id) {
-		return this.likeRepo.findById(id).orElse(null);
-	}
 	
-	public List<Like> getIdeaLikesByLikeByAscOrder(Like like){
-		return this.likeRepo.findByIdeaLikeOrderByLikesAsc(like);
-	}
+	
+	
+	
 	
 	
 	
 	// UPDATE methods
 	
-	public void updateIdea(Long id, Idea ideaUpdate) {
-		Idea idea = this.getIdeaById(id);
-		idea.setIdea(ideaUpdate.getIdea());
+	public Idea updateIdea(Idea ideaUpdate) {
+		Optional<Idea> optionalIdea = ideaRepo.findById(ideaUpdate.getId());
+		if(optionalIdea.isPresent()) {
+			Idea idea = optionalIdea.get();
+			idea.setTitle(ideaUpdate.getTitle());
+			idea.setCreator(ideaUpdate.getCreator());
+			idea.setLikes(ideaUpdate.getLikes());
+			idea.setUsers(ideaUpdate.getUsers());
+			return this.ideaRepo.save(idea);
+		} else {
+			return null;
+		}
+	}
+	/*
+	public void likeIdea(Idea idea, User u) {
+		
+		int liker = idea.getLikes();
+		
+		idea.setLikes(liker);
+		ideaRepo.save(idea);
+	} 
+	
+	public void unLikeIdea(Long ideaId) {
+		Idea idea = this.ideaRepo.findById(ideaId).orElse(null);
+		int liker = idea.getLikes();
+		liker--;
+		idea.setLikes(liker);
 		ideaRepo.save(idea);
 	}
-	
-	public void addLikeToIdea(User liker, Idea idea) {
-		idea.getUsersAlreadyLike().add(liker);
-	}
-	
+	*/
 	// DELETE Methods
 	public void deleteIdeaById(Long id) {
 		this.ideaRepo.deleteById(id);
 	}
 	
-	public void deleteLikeById(Long id) {
-		this.likeRepo.deleteById(id);
-	}
+	
 	
 	
 }

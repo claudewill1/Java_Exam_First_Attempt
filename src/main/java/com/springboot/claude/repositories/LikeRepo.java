@@ -12,6 +12,5 @@ public interface LikeRepo extends CrudRepository<Like, Long> {
 	// retrieve list of liked ideas
 	List<Like> findAll();
 	
-	// retrieves all liked ideas in ascending order
-	List<Like> findByIdeaLikeOrderByLikesAsc(Like like);
+	
 }

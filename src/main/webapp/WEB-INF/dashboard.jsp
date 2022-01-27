@@ -1,17 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!-- c:out ; c:forEach etc. --> 
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <!-- Formatting (dates) --> 
-<%@taglib prefix="fmt"uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- form:form -->
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!-- for rendering errors on PUT routes -->
 <%@ page isErrorPage="true" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><!--Insert Page Title--></title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/main.css"> <!-- change to match your file/naming structure -->
     <script src="/webjars/jquery/jquery.min.js"></script>
@@ -21,7 +21,7 @@
    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
 	
 		<!-- Company Name and Logo -->
-        <a class="navbar-brand text-decoration-none" href="#">Great Ideas</a>
+        <a style="margin-left:10px;" class="navbar-brand text-decoration-none ml-5" href="#">Great Ideas</a>
         
         <!-- Toggler Button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
@@ -41,8 +41,8 @@
         
 	</nav>
 	<main>
-		<div class="ml-4">
-			<h3>Welcome ${user.firstName}</h3>
+		<div style="margin-left:10px;" class="ml-4">
+			<h3 class="ml-4">Welcome ${user.name}</h3>
 			<hr>
 			
 			<div class="mt-3 mb-4">
@@ -61,25 +61,25 @@
 							<tbody>
 								<c:forEach items="${ideas}" var="idea">
 									<tr>
+										<td><a href="/idea/${idea.id}">${idea.title}</a></td>
+										<td>${idea.creator}</td>
+										<td>${idea.likes}</td>
 										<td>
-											<a href="/ideas/${idea.id}">${idea.name}</a>
-										</td>
-										<td>${idea.creator.firstName} ${idea.creator.lastName}</td>
-										<td>${idea.likes.size()}</td>
-										<td>
+										<!-- 
 											<c:choose>
-												<c:when test="${!idea.usersAlreadyLike.contains(user)}">
+												<c:when test="${!idea.users.contains(user)}">
 													<a href="/ideas/like/${idea.id}">Like</a>
 												</c:when>
 												<c:otherwise>
 													<a href="/idea/unlike/${idea.id}">UnLike</a>
 												</c:otherwise>
-											</c:choose>
+											</c:choose>  -->
 										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
+						<a href="/idea/new" class="btn btn-primary">Create An Idea</a>
 					</div>
 				</div>
 				

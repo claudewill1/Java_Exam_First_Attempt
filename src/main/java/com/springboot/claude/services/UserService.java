@@ -35,6 +35,10 @@ private final UserRepo userRepository;
 		
 	}
 	
+	public String getName(String name) {
+		return name;
+	}
+	
 	// authenticate user
 	public boolean authenticateUser(String email, String password) {
 		// first find the user by email

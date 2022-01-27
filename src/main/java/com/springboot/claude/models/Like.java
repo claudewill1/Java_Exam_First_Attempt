@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="liked_ideas")
+@Table(name="likedIdeas")
 public class Like {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -39,9 +39,7 @@ public class Like {
 	
 	public Like() {}
 	
-	public Like(User user, Idea idea) {
-		
-	}
+	
 
 	public Long getId() {
 		return id;
