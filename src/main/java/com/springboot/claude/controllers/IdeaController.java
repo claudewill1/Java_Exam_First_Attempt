@@ -1,10 +1,7 @@
 package com.springboot.claude.controllers;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,10 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springboot.claude.models.Idea;
-import com.springboot.claude.models.Like;
 import com.springboot.claude.models.User;
 import com.springboot.claude.services.LikeIdeaService;
 import com.springboot.claude.services.UserService;
@@ -69,7 +66,7 @@ public class IdeaController {
 	}
 	
 	@GetMapping("/idea/{idea_id}")
-	public String viewIdea(@PathVariable("idea_id") Long idea_id, Model model, HttpSession session) {
+	public String viewIdea(@PathVariable(value="idea_id") Long idea_id, Model model, HttpSession session) {
 		Idea idea = likeIdeaService.getIdeaById(idea_id);
 		Long userId = (Long) session.getAttribute("user_id");
 		User user = userService.findUserById(userId);
@@ -82,24 +79,36 @@ public class IdeaController {
 	}
 	
 	@GetMapping("/idea/edit/{idea_id}")
-	public String editIdea(@PathVariable("idea_id") Long id, Model model) {
-		
-		Idea idea = likeIdeaService.getIdeaById(id);
-		model.addAttribute("idea",idea);
-		return "edit.jsp";
+	public String editIdea(@PathVariable("idea_id") Long idea_id, Model model, @Valid @ModelAttribute("idea") Idea idea, HttpSession session) {
+		Idea idea1 = likeIdeaService.getIdeaById(idea_id);
+		Long uId = (Long)session.getAttribute("user_id");
+		String userName = userService.findUserById(uId).getName();
+		if(!idea1.getCreator().equals(userName)) {
+			return "redirect:/dashboard";
+		} else
+		{
+			
+			model.addAttribute("idea_id",idea1.getId());
+			model.addAttribute("idea1",idea1);
+			return "edit.jsp";
+		}
 	}
 	
 	@PostMapping(value="/idea/update/{idea_id}")
-	public String updateIdea(@Valid @ModelAttribute("idea") Idea idea, @PathVariable("idea_id") Long id, BindingResult result, HttpSession session) {
-		if(result.hasErrors()) {
+	public String update(@Valid @ModelAttribute("idea") Idea idea, BindingResult result, HttpSession session, @PathVariable("idea_id") Long id) {
+		if (result.hasErrors()) {
 			return "edit.jsp";
 		} else {
-			Long userId = (Long) session.getAttribute("user_id");
-			String user = userService.findUserById(userId).getName();
-			idea.setCreator(user);
-			likeIdeaService.updateIdea(idea);
-			return "redirect:/dashboard";
+			Idea idea1 = likeIdeaService.getIdeaById(id);
+			Long uID = (Long) session.getAttribute("user_id");
+			String userName = userService.findUserById(uID).getName();
+			if (! idea1.getCreator().equals(userName))
+				return "redirect:/dashboard";
+			idea1.setTitle(idea.getTitle());
+			likeIdeaService.updateIdea(idea1);
+			return "redirect:/idea/" + idea1.getId();
 		}
+		
 	}
 	
 	@GetMapping("/idea/delete/{idea_id}")

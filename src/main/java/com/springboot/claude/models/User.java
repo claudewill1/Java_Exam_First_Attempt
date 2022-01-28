@@ -14,13 +14,16 @@ public class User {
 	private Long id;
 	
 	@Column
-	@NotBlank(message="This field is required and cannot be blank. Name must be between 2 and 200 characters long!")
-	@Size(min=2, max=200)
+	@NotBlank(message="This field is required and cannot be blank.")
+	@Size(min=2, max=200, message="Name must be between 2 and 200 characters long!")
 	private String name;
 	
+	@Column
+	@NotBlank(message="Field cannot be empty")
 	@Email(message="Invalid entry") 
 	private String email;
-	@Size(min=8, message="Password must be at least 8 characters.")
+	@NotBlank(message="This field is required and cannot be blank.")
+	@Size(min=8,max=200)
 	private String password;
 	@Transient
 	@NotBlank(message="This field cannot be blank")

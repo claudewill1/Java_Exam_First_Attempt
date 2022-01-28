@@ -51,17 +51,8 @@ public class LikeIdeaService {
 	// UPDATE methods
 	
 	public Idea updateIdea(Idea ideaUpdate) {
-		Optional<Idea> optionalIdea = ideaRepo.findById(ideaUpdate.getId());
-		if(optionalIdea.isPresent()) {
-			Idea idea = optionalIdea.get();
-			idea.setTitle(ideaUpdate.getTitle());
-			idea.setCreator(ideaUpdate.getCreator());
-			idea.setLikes(ideaUpdate.getLikes());
-			idea.setUsers(ideaUpdate.getUsers());
-			return this.ideaRepo.save(idea);
-		} else {
-			return null;
-		}
+		
+		return this.ideaRepo.save(ideaUpdate);
 	}
 	/*
 	public void likeIdea(Idea idea, User u) {

@@ -27,15 +27,19 @@ public class LoginAndRegistrationController {
 	}
 	
 	@GetMapping("/")
-	public String index(@ModelAttribute("user") User user, @ModelAttribute("error") String error, Model model) {
+	public String index(@ModelAttribute("user") User user, @ModelAttribute("error") String error, Model model, HttpSession session) {
+		
 		return "index.jsp";
 	}
+	
+	
 	
 	@PostMapping("/register")
 	public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult result, HttpSession session, Model model) {
 		userValidator.validate(user, result);
 		if(result.hasErrors()){
-			return "redirect:/";
+			
+			return "index.jsp";
 		} else {
 			user = this.userService.registerUser(user);
 			session.setAttribute("user_id", user.getId());
@@ -45,15 +49,15 @@ public class LoginAndRegistrationController {
 	}
 	
 	@PostMapping("/login")
-	public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, RedirectAttributes redirect, HttpSession session) {
-		boolean isAuthenticated = userService.authenticateUser(email, password);
-		if(isAuthenticated) {
+	public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, RedirectAttributes redirect, HttpSession session,Model model) {
+		
+		if(userService.authenticateUser(email, password)) {
 			User user = userService.findByEmail(email);
 			session.setAttribute("user_id", user.getId());
 			return "redirect:/dashboard";
 		} else
 		{
-			session.setAttribute("errorMessage", "Login Credentials Invalid");
+			redirect.addFlashAttribute("LoginError", "Login Credentials Invalid");
 			return "redirect:/";
 		}
 	}

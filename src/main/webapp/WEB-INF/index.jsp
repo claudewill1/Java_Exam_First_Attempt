@@ -27,7 +27,8 @@
 	<main>
 		<div class="container d-flex flex-direction-row justify-content-between">
     
-		   <div id="registrationContainer">		
+		   <div id="registrationContainer">	
+		   		
 				<h2 class="my-3">Register</h2>
 			         
 			        <form:form action="/register" method="POST" modelAttribute="user">
@@ -37,7 +38,7 @@
 				        	<form:label class="col-3 col-form-label" path="name">Name</form:label>
 				       		 <div class="col-8">
 				        		<form:input class="form-control" type="text" path="name"/>
-				        		<form:errors class="small" path="name"/>
+				        		<p><form:errors class="small" path="name"/></p>
 				        	</div>
 				    	</div>
 				    	
@@ -47,7 +48,7 @@
 				        	<form:label class="col-3 col-form-label" path="email">Email</form:label>
 				       		 <div class="col-8">
 				        		<form:input class="form-control" type="email" path="email"/>
-				        		<form:errors class="small" path="email"/>
+				        		<p><form:errors class="small" path="email"/></p>
 				        	</div>
 				    	</div>
 				    			    	
@@ -56,7 +57,7 @@
 				        	<form:label class="col-3 col-form-label" path="password">Password</form:label>
 				       		 <div class="col-8">
 				        		<form:input class="form-control" type="password" path="password"/>
-				        		<form:errors class="small" path="password"/>
+				        		<p><form:errors class="small" path="password"/></p>
 				        	</div>
 				    	</div>
 				    	
@@ -65,7 +66,7 @@
 				        	<form:label class="col-3 col-form-label" path="passwordConfirm">Password Confirm</form:label>
 				       		 <div class="col-8">
 				        		<form:input class="form-control" type="password" path="passwordConfirm"/>
-				        		<form:errors class="small" path="passwordConfirm"/>
+				        		<p><form:errors class="small" path="passwordConfirm"/></p>
 				        	</div>
 				    	</div>
 				    	
@@ -81,7 +82,7 @@
 		    <div id="loginContainer">
 			    <h2 class="my-3">Login</h2>
 			        
-					<p id="errors" class="mb-3"><c:out value="${error}" /></p>
+					<p id="errors" class="mb-3"><c:out value="${LoginError}"/></p>
 					
 			        <form action="/login" method="POST">
 			        	
@@ -90,6 +91,7 @@
 				        	<label class="col-3 col-form-label" for="email">Email</label>
 				       		 <div class="col-8">
 				        		<input class="form-control" type="email" id="email" name="email"/>
+				        		
 				        	</div>
 				    	</div>
 				    	
@@ -98,6 +100,7 @@
 				        	<label class="col-3 col-form-label" for="password">Password</label>
 				       		 <div class="col-8">
 				        		<input class="form-control" type="password" id="password" name="password"/>
+				        		
 				        	</div>
 				    	</div>
 				    	

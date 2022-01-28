@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,10 +27,13 @@ public class Idea {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	@Valid
 	@Column
 	@Size(min=3,message="Title must be greater than 3 characters")
 	private String title;
+	
+	
+
 	private String creator;
 
 	private int likes;
@@ -42,7 +47,9 @@ public class Idea {
 	private Date updatedAt;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "likedIdeas", joinColumns = @JoinColumn(name = "idea_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@JoinTable(name = "likedIdeas", 
+	joinColumns = @JoinColumn(name = "idea_id"), 
+	inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private List<User> users;
 
 	public Idea() {

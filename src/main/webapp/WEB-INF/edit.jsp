@@ -42,27 +42,34 @@
    		
    		<div class="row">
    			<div class="col-6">
-   				<form:form action="/idea/${idea.id}/edit" method="POST" modelAttribute="idea">
-   					<input type="hidden" name="_method" value="put"/>
+   				<form:form action="/idea/update/${idea_id}" method="POST" modelAttribute="idea">
    					
-   					<form:hidden value="${user.id}" path="creator"/>
+   					
    					
    					<div class="form-group row">
-   						<form:label class="col-3 col-form-label" path="title">Content:</form:label>
+   						<form:label class="col-3 col-form-label" path="title">Title:</form:label>
    						<div class="col-8">
-   							<form:input class="form-control" type="text" path="title"/>
-   							<form:errors class="small" path="title"/>
+   							
+							<form:input type="title" path="title" class="form-control" />
    						</div>
    					</div>
    					<div class="form-group row">
    						<div class="col-1 offset-2">
    							<input class="btn btn-success" type="submit" value="Update"/>
+   							
    						</div>
    						<div class="col-1 ml-2">
    							<a class="btn btn-danger text-decoration-none" href="/ideas/delete/${idea.id}">Delete</a>
    						</div>
    					</div>
    					<p id="errors" class="mb-3">${error}</p>
+   				</form:form>
+   				<form:form method="POST" action="/idea/delete/${idea_id}">
+   					<div class="form-group row">
+   						<div class="col-1 ml-2">
+   							<input class="btn btn-danger" type="submit" value="Delete">
+   						</div>
+   					</div>
    				</form:form>
    			</div>
    		</div>
